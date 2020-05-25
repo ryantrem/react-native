@@ -10,6 +10,13 @@
 
 'use strict';
 
+const testArray = new Uint8Array(2);
+testArray[0] = 42;
+testArray[1] = 101;
+testArrayBuffer(testArray.buffer);
+console.log(`Mutated element at index 0: ${testArray[0]}`);
+console.log(`Mutated element at index 1: ${testArray[1]}`);
+
 const RNTesterActions = require('./utils/RNTesterActions');
 const RNTesterExampleContainer = require('./components/RNTesterExampleContainer');
 const RNTesterExampleList = require('./components/RNTesterExampleList');

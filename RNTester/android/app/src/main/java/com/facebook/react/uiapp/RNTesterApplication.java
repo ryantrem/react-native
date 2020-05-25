@@ -41,7 +41,7 @@ public class RNTesterApplication extends Application implements ReactApplication
 
         @Override
         public List<ReactPackage> getPackages() {
-          return Arrays.<ReactPackage>asList(new MainReactPackage());
+          return Arrays.<ReactPackage>asList(new MainReactPackage(), new JSITestPackage());
         }
       };
 

@@ -773,7 +773,7 @@ class ArrayBuffer : public Object {
   ArrayBuffer(ArrayBuffer&&) = default;
   ArrayBuffer& operator=(ArrayBuffer&&) = default;
 
-  /// \return the size of the ArrayBuffer, according to its byteLength property.
+  /// \return the size of the ArrayBuffer, according to its  property.
   /// (C++ naming convention)
   size_t size(Runtime& runtime) const {
     return runtime.size(*this);
