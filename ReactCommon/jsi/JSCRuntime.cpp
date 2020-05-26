@@ -286,6 +286,17 @@ class JSCRuntime : public jsi::Runtime {
 #endif
 #endif
 
+#if defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_10_0
+#define _JSC_NO_ARRAY_BUFFERS
+#endif
+#endif
+#if defined(__MAC_OS_X_VERSION_MIN_REQUIRED)
+#if __MAC_OS_X_VERSION_MIN_REQUIRED < __MAC_10_12
+#define _JSC_NO_ARRAY_BUFFERS
+#endif
+#endif
+
 // JSStringRef utilities
 namespace {
 std::string JSStringToSTLString(JSStringRef str) {
@@ -923,36 +934,27 @@ bool JSCRuntime::isArray(const jsi::Object &obj) const {
 }
 
 bool JSCRuntime::isArrayBuffer(const jsi::Object &obj) const {
-#if defined(__APPLE__)
-  if (__builtin_available(iOS 10.0, *)) {
-#endif
-    auto typedArrayType = JSValueGetTypedArrayType(ctx_, objectRef(obj), nullptr);
-    return typedArrayType == kJSTypedArrayTypeArrayBuffer;
-#if defined(__APPLE__)
-  }
+#if defined(_JSC_NO_ARRAY_BUFFERS)
   throw std::runtime_error("Unsupported");
+#else
+  auto typedArrayType = JSValueGetTypedArrayType(ctx_, objectRef(obj), nullptr);
+  return typedArrayType == kJSTypedArrayTypeArrayBuffer;
 #endif
 }
 
 uint8_t *JSCRuntime::data(const jsi::ArrayBuffer &obj) {
-#if defined(__APPLE__)
-  if (__builtin_available(iOS 10.0, *)) {
-#endif
-    return static_cast<uint8_t*>(JSObjectGetArrayBufferBytesPtr(ctx_, objectRef(obj), nullptr));
-#if defined(__APPLE__)
-  }
+#if defined(_JSC_NO_ARRAY_BUFFERS)
   throw std::runtime_error("Unsupported");
+#else
+  return static_cast<uint8_t*>(JSObjectGetArrayBufferBytesPtr(ctx_, objectRef(obj), nullptr));
 #endif
 }
 
 size_t JSCRuntime::size(const jsi::ArrayBuffer &obj) {
-#if defined(__APPLE__)
-  if (__builtin_available(iOS 10.0, *)) {
-#endif
-    return JSObjectGetArrayBufferByteLength(ctx_, objectRef(obj), nullptr);
-#if defined(__APPLE__)
-  }
+#if defined(_JSC_NO_ARRAY_BUFFERS)
   throw std::runtime_error("Unsupported");
+#else
+  return JSObjectGetArrayBufferByteLength(ctx_, objectRef(obj), nullptr);
 #endif
 }
 
