@@ -923,16 +923,37 @@ bool JSCRuntime::isArray(const jsi::Object &obj) const {
 }
 
 bool JSCRuntime::isArrayBuffer(const jsi::Object &obj) const {
-  auto typedArrayType = JSValueGetTypedArrayType(ctx_, objectRef(obj), nullptr);
-  return typedArrayType == kJSTypedArrayTypeArrayBuffer;
+#if defined(__APPLE__)
+  if (__builtin_available(iOS 10.0, *)) {
+#endif
+    auto typedArrayType = JSValueGetTypedArrayType(ctx_, objectRef(obj), nullptr);
+    return typedArrayType == kJSTypedArrayTypeArrayBuffer;
+#if defined(__APPLE__)
+  }
+  throw std::runtime_error("Unsupported");
+#endif
 }
 
 uint8_t *JSCRuntime::data(const jsi::ArrayBuffer &obj) {
-  return static_cast<uint8_t*>(JSObjectGetArrayBufferBytesPtr(ctx_, objectRef(obj), nullptr));
+#if defined(__APPLE__)
+  if (__builtin_available(iOS 10.0, *)) {
+#endif
+    return static_cast<uint8_t*>(JSObjectGetArrayBufferBytesPtr(ctx_, objectRef(obj), nullptr));
+#if defined(__APPLE__)
+  }
+  throw std::runtime_error("Unsupported");
+#endif
 }
 
 size_t JSCRuntime::size(const jsi::ArrayBuffer &obj) {
-  return JSObjectGetArrayBufferByteLength(ctx_, objectRef(obj), nullptr);
+#if defined(__APPLE__)
+  if (__builtin_available(iOS 10.0, *)) {
+#endif
+    return JSObjectGetArrayBufferByteLength(ctx_, objectRef(obj), nullptr);
+#if defined(__APPLE__)
+  }
+  throw std::runtime_error("Unsupported");
+#endif
 }
 
 bool JSCRuntime::isFunction(const jsi::Object &obj) const {
