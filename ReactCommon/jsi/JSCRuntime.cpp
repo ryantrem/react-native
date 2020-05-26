@@ -276,6 +276,9 @@ class JSCRuntime : public jsi::Runtime {
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_9_0
 #define _JSC_FAST_IS_ARRAY
 #endif
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_10_0
+#define _JSC_NO_ARRAY_BUFFERS
+#endif
 #endif
 #if defined(__MAC_OS_X_VERSION_MIN_REQUIRED)
 #if __MAC_OS_X_VERSION_MIN_REQUIRED >= __MAC_10_11
@@ -284,14 +287,6 @@ class JSCRuntime : public jsi::Runtime {
 // we understand why.
 #define _JSC_FAST_IS_ARRAY
 #endif
-#endif
-
-#if defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
-#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_10_0
-#define _JSC_NO_ARRAY_BUFFERS
-#endif
-#endif
-#if defined(__MAC_OS_X_VERSION_MIN_REQUIRED)
 #if __MAC_OS_X_VERSION_MIN_REQUIRED < __MAC_10_12
 #define _JSC_NO_ARRAY_BUFFERS
 #endif
